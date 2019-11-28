@@ -1,0 +1,13 @@
+name: Build - Go
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: namely/protoc-all
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: protoc
+      run: protoc --go_out="." proto/led.proto
