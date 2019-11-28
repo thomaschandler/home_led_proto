@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+/*
+Repeated led_strip
+  - LED state
+    - enum constant colour
+    - R
+    - G
+    - B
+Repeated specific_led
+  - LED by id
+    - LED state
+Controller state (PSU on/off, brightness)
+*/
+
+/*
+Same constants as HTMLColorCode
+https://github.com/FastLED/FastLED/blob/311ed1df3f34c915aee219520dfaa44cc28762cf/pixeltypes.h#L752
+*/
+enum Color {
+  BLACK = 0;
+  BLUE = 0x0000FF;
+  GREEN = 0x008000;
+  RED = 0xFF0000;
+  PURPLE = 0x800080;
+}
+
+/* State of a single LED */
+message LedState {
+  Color color = 1;
+  uint32 hue = 2; /* Expected to conform to FastLED HSV Colors (0-255) https://github.com/FastLED/FastLED/wiki/FastLED-HSV-Colors */
+}
+
+message LedStrip {
+  repeated LedState leds = 1;
+}
+
+/* Global state of the LED controller */
+message GlobalState {
+  uint32 brightness = 1;
+}
+
+message ControlMessage {
+  GlobalState global_state = 1;
+  LedStrip led_strip = 2;
+}
